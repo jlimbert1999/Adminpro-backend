@@ -1,14 +1,22 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-
-const routerprueba = require('./pruebas/router.pruebas')
-const dbConection = require('./database/config')
 require('dotenv').config()
+
+const dbConection = require('./database/config')
+const allroutes = require('./routes')
+
+//COnfigurar cors para peticiones de todos los dominios
 app.use(cors())
+
+//Lectura del body
+app.use(express.json())
+
+//Conexion con la BD
 dbConection()
 
-app.use(routerprueba)
+//Establecer rutas de componentes
+allroutes(app)
 
 
 app.listen(process.env.PORT, () => {
