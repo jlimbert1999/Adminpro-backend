@@ -1,14 +1,18 @@
 const { Router } = require('express')
 const router = Router()
 const { check } = require('express-validator')
+
 const controller = require('./controller.user')
 const validarCampos = require('../../middleware/validar-campos')
-const { validarToken } = require('../../middleware/validar-jwttoken')
+const { validarToken } = require('../../middleware/validar-jwtToken')
+
 router.get('/', validarToken, (req, res) => {
-    controller.obtener_usuarios().then((usuarios) => {
+    const desde = Number(req.query.desde) || 0
+    controller.obtener_usuarios(desde).then((result) => {
         res.send({
             ok: true,
-            usuarios
+            usuarios: result.usuarios,
+            total: result.total
         })
 
     }).catch((err) => {

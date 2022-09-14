@@ -1,13 +1,13 @@
-const storage = require('./storage.login')
-const userStorage = require('../users/storage.user')
 const bcrypt = require('bcryptjs')
 const { generarToken } = require('../../helpers/jwt')
+const Usuarios = require('../users/model.user')
 
 login = (credenciales) => {
     const { email, password } = credenciales
     return new Promise(async (resolve, reject) => {
         try {
-            const usuariodb = await userStorage.verifyExisteEmail(email)
+           
+            const usuariodb = await Usuarios.findOne({ email })
             if (!usuariodb) {
                 return reject({
                     status: 400,
