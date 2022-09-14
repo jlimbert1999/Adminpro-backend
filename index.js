@@ -16,6 +16,7 @@ app.use(express.json())
 dbConection()
 
 //Establecer rutas de componentes
+app.use(express.static('public'))
 allroutes(app)
 
 

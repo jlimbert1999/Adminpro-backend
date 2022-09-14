@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo login Google</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+<body>
+    <h1>Google</h1>
+    <div id="g_id_onload" data-client_id="935296079207-e0l4k3tpdagnd72ja0toualhamghm23h.apps.googleusercontent.com"
+        data-auto_prompt="false" data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left">
+    </div>
+   
+       
+  
+    <div class="g_id_signout" >
+        <button id="btn_logoutGoogle">
+            salir
+        </button>
+    </div>
+   
+
+    <script>
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            console.log(response.credential);
+            // const responsePayload = decodeJwtResponse(response.credential);
+
+
+        }
+        const button = document.getElementById('btn_logoutGoogle');
+        button.onclick = () => {
+            google.accounts.id.disableAutoSelect();
+        }
+       
+    </script>
+</body>
+
+</html>
