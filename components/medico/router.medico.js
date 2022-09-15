@@ -38,10 +38,38 @@ router.post('',
             })
         });
     })
-router.put('', (req, res) => {
-
-})
-router.delete('', (req, res) => {
+router.put('/:id',
+    [
+        validarToken,
+        check('nombre', 'El nombre es requerido').not().notEmpty(),
+        check('hospital', 'El hospital es requerido').isMongoId(),
+        validarCampos
+    ]
+    , (req, res) => {
+        controller.actualizar_medico(req.body, req.params.id, req._id).then((medico) => {
+            res.status(201).send({
+                ok: true,
+                medico
+            })
+        }).catch((err) => {
+            res.status(err.code).send({
+                ok: false,
+                message: err.message
+            })
+        });
+    })
+router.delete('/:id', validarToken, (req, res) => {
+    controller.eliminar_medico(req.params.id).then((message) => {
+        res.status(201).json({
+            ok: true,
+            message
+        })
+    }).catch((err) => {
+        res.status(err.code).send({
+            ok: false,
+            message: err.message
+        })
+    });
 
 })
 module.exports = router

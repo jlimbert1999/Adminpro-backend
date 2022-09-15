@@ -23,7 +23,7 @@ crear_usuario = (usuario) => {
         }
     })
 }
-obtener_usuarios = (desde) => {
+obtener_usuarios = async (desde) => {
     return new Promise(async (resolve, reject) => {
         try {
 

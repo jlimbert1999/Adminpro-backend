@@ -72,7 +72,13 @@ login_google = (tokenGoogle) => {
     })
 }
 
+const renewToken = async (id_user) => {
+    console.log(id_user);
+    return await generarToken(id_user)
+}
+
 module.exports = {
     login,
-    login_google
+    login_google,
+    renewToken
 }

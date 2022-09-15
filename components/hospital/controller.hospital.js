@@ -16,11 +16,47 @@ obtener_hospitales = () => {
         resolve(await Hospital.find().populate('usuario', 'nombre img'))
     })
 }
-actualizar_hospital = () => {
+actualizar_hospital = (data, id_hospital, id_user) => {
+    //id_user de la persona que esta actualizando
+    return new Promise(async (resolve, reject) => {
+        try {
+            const hospitaldb = await Hospital.findById(id_hospital)
+            if (!hospitaldb) {
+                return reject({ status: 401, message: 'El hospital para actualizar no existe' })
+            }
+            const cambios = {
+                ...data,
+                usuario: id_user
+            }
+            const updateHospital = await Hospital.findByIdAndUpdate(id_hospital, cambios, { new: true })
+            resolve(updateHospital)
+
+        } catch (error) {
+            console.log('[Server]: error (actualizar hospital) => ', error);
+            return reject({ code: 500, message: 'Error al actualizar hospital' })
+
+        }
+
+    })
+
+
 
 }
-eliminar_hospital = () => {
+eliminar_hospital = (id_hospital) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const hospitaldb = await Hospital.findById(id_hospital)
+            if (!hospitaldb) {
+                return reject({ code: 401, message: 'El hospital para elimianr no existe' })
+            }
+            await Hospital.findByIdAndDelete(id_hospital)
+            resolve("el hospital fue eliminado")
 
+        } catch (error) {
+            console.log('[Server]: error (eliminar hospital) => ', error);
+            reject({ code: 500, message: 'Error al eliminar hospital' })
+        }
+    })
 }
 
 module.exports = {

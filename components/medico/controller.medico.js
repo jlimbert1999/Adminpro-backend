@@ -1,3 +1,4 @@
+const Hospital = require('../hospital/model.hospital')
 const Medicos = require('./model.medico')
 
 crear_medico = (medico, id_usuario) => {
@@ -28,7 +29,48 @@ obtener_medicos = async () => {
     })
 
 }
+actualizar_medico = (data, id_medico, id_user) => {
+    const { hospital } = data
+    return new Promise(async (resolve, reject) => {
+        try {
+            const medicodb = await Medicos.findById(id_medico)
+            if (!medicodb) {
+                return reject({ code: 401, message: 'El medico para actualizar no existe' })
+            }
+            const hospitaldb = await Hospital.findById(hospital)
+            if (!hospitaldb) {
+                return reject({ code: 401, message: 'El hospital para actualizar al medico no existe' })
+            }
+            const cambios = {
+                ...data,
+                usuario: id_user
+            }
+            resolve(await Medicos.findByIdAndUpdate(id_medico, cambios, { new: true }))
+        } catch (error) {
+            console.log('[Server]: error (actualizar medico)', error);
+            reject({ code: 500, message: 'El medico no se pudo actualizar' })
+        }
+    })
+}
+eliminar_medico = (id_medico) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const medicodb = await Medicos.findById(id_medico)
+            if (!medicodb) {
+                return reject({ code: 401, message: 'El medico para eliminar no existe' })
+            }
+            await Medicos.findByIdAndDelete(id_medico)
+            resolve("Se elimino el medico")
+        } catch (error) {
+            console.log('[Server]: error (eliminar medico)', error);
+            reject({ code: 500, message: 'El medico no se pudo eliminar' })
+        }
+    })
+
+}
 module.exports = {
     crear_medico,
-    obtener_medicos
+    obtener_medicos,
+    actualizar_medico,
+    eliminar_medico
 }

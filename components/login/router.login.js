@@ -3,6 +3,7 @@ const router = Router()
 const { check } = require('express-validator')
 const controller = require('./controller.login')
 const validarCampos = require('../../middleware/validar-campos')
+const { validarToken } = require('../../middleware/validar-jwtToken')
 
 
 router.post('/',
@@ -41,6 +42,21 @@ router.post('/google',
             })
         });
     })
+
+router.get('/renew', validarToken, (req, res) => {
+    //renovar token con id insertado por milddleware validat token
+    controller.renewToken(req._id).then((token) => {
+        res.send({
+            ok: true,
+            token
+        })
+    }).catch((err) => {
+        res.status(err.status).send({
+            ok: false,
+            message: err.message
+        })
+    });
+})
 
 
 module.exports = router
