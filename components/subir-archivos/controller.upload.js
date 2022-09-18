@@ -45,7 +45,7 @@ cargar_archivo = async (req, res = response) => {
             const usuariodb = await Usuarios.findById(id)
             if (!usuariodb) {
                 return res.json({
-                    ok: true,
+                    ok: false,
                     message: 'El usuario para actualizar la imagen no existe'
                 })
             }
@@ -69,7 +69,7 @@ cargar_archivo = async (req, res = response) => {
             const medicodb = await Medicos.findById(id)
             if (!medicodb) {
                 return res.json({
-                    ok: true,
+                    ok: false,
                     message: 'El medico para actualizar la imagen no existe'
                 })
             }
@@ -92,7 +92,7 @@ cargar_archivo = async (req, res = response) => {
             const hospitaldb = await Hospitales.findById(id)
             if (!hospitaldb) {
                 return res.json({
-                    ok: true,
+                    ok: false,
                     message: 'El hospital para actualizar la imagen no existe'
                 })
             }
@@ -113,7 +113,8 @@ cargar_archivo = async (req, res = response) => {
     }
     return res.json({
         ok: true,
-        message: `Se atualizo la imagen en ${tabla}`
+        message: `Se atualizo la imagen en ${tabla}`,
+        nombre_imagen:nombreFile
     })
 }
 

@@ -43,19 +43,21 @@ router.post('/google',
         });
     })
 
-router.get('/renew', validarToken, (req, res) => {
-    //renovar token con id insertado por milddleware validat token
+router.get('/renew_token', validarToken, (req, res) => {
+    //renovar token con id insertado por milddleware validar token
     controller.renewToken(req._id).then((token) => {
         res.send({
             ok: true,
             token
         })
-    }).catch((err) => {
-        res.status(err.status).send({
-            ok: false,
-            message: err.message
-        })
-    });
+    })
+})
+
+router.get('/verify_token', validarToken, (req, res) => {
+    res.send({
+        ok: true,
+        message:'token validado'
+    })
 })
 
 

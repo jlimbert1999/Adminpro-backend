@@ -24,7 +24,7 @@ login = (credenciales) => {
             }
             //Generacion token
             try {
-                const token = await generarToken(usuariodb._id)
+                const token = await generarToken(usuariodb._id, usuariodb.nombre, usuariodb.role, usuariodb.google, usuariodb.email, usuariodb.img)
                 resolve(token)
             } catch (error) {
                 console.log('[Server]: Error (generacion token) =>', error);
@@ -64,7 +64,7 @@ login_google = (tokenGoogle) => {
             }
             //guadar cambios
             await newUser.save()
-            const token = await generarToken(newUser._id)
+            const token = await generarToken(newUser._id, newUser.nombre, newUser.role, usuariodb.google, usuariodb.email, usuariodb.img)
             resolve(token)
         } catch (error) {
             reject({ status: 401, message: 'token de google invalido' })
@@ -73,8 +73,15 @@ login_google = (tokenGoogle) => {
 }
 
 const renewToken = async (id_user) => {
-    console.log(id_user);
-    return await generarToken(id_user)
+    try {
+        const usuariodb = await Usuarios.findById(id_user)
+        return await generarToken(id_user, usuariodb.nombre, usuariodb.role, usuariodb.google, usuariodb.email, usuariodb.img)
+
+    } catch (error) {
+        console.log('[Server]: Error al renovar token', error);
+    }
+
+
 }
 
 module.exports = {

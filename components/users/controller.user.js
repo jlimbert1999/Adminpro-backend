@@ -33,7 +33,7 @@ obtener_usuarios = async (desde) => {
                     Usuarios.count()
                 ]
             )
-            resolve({usuarios, total})
+            resolve({ usuarios, total })
         } catch (error) {
             console.log('[Server]: Error (obtener usuarios) =>', error);
             reject('No se obtener a los usuarios')
@@ -45,15 +45,16 @@ actualizar_usuario = (id_user, body) => {
     let { email } = body
     return new Promise(async (resolve, reject) => {
         try {
+            console.log(email);
             const usuariodb = await Usuarios.findById(id_user)
             if (!usuariodb) {
                 return reject('El usuario con ese id no existe')
             }
-            if (usuariodb.email == email) {
-                //email es igual por lo que no quiere actualizar
-                delete body.email
+            if (usuariodb.google && usuariodb.email !== email) {
+                //si es user de google no actualizar email
+                return reject('Los usuarios de google no pueden cambiar el email')
             }
-            else {
+            if (usuariodb.email !== email) {
                 const existeEmail = await Usuarios.findOne({ email })
                 if (existeEmail) {
                     return reject("El correo ya existe, intente con uno nuevo")
