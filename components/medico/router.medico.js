@@ -5,7 +5,7 @@ const { validarToken } = require('../../middleware/validar-jwttoken')
 const validarCampos = require('../../middleware/validar-campos')
 const controller = require('./controller.medico')
 
-router.get('', (req, res) => {
+router.get('', validarToken, (req, res) => {
     controller.obtener_medicos().then((medicos) => {
         res.status(200).send({
             ok: true,
@@ -13,6 +13,20 @@ router.get('', (req, res) => {
         })
     }).catch((err) => {
         res.status(err.status).send({
+            ok: false,
+            message: err.message
+        })
+    });
+})
+router.get('/:id', validarToken,(req, res) => {
+    const id_medico = req.params.id
+    controller.obtener_medico(id_medico).then(medico => {
+        res.status(200).send({
+            ok: true,
+            medico
+        })
+    }).catch((err) => {
+        res.status(err.code).send({
             ok: false,
             message: err.message
         })

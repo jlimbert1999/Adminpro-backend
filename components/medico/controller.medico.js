@@ -68,9 +68,28 @@ eliminar_medico = (id_medico) => {
     })
 
 }
+
+obtener_medico = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const medicodb = await Medicos.findById(id).populate('usuario', 'nombre img')
+                .populate('hospital', 'nombre img')
+            if (!medicodb) {
+                return reject({ code: 401, message: 'El medico no existe' })
+            }
+            resolve(medicodb)
+
+        } catch (error) {
+            console.log('[Server]: error (obtener un medico)', error);
+            reject({ code: 500, message: 'Erro al obtener el medico' })
+        }
+
+    })
+}
 module.exports = {
     crear_medico,
     obtener_medicos,
     actualizar_medico,
-    eliminar_medico
+    eliminar_medico,
+    obtener_medico
 }
