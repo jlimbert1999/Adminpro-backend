@@ -4,7 +4,7 @@ const { check } = require('express-validator')
 
 const controller = require('./controller.user')
 const validarCampos = require('../../middleware/validar-campos')
-const { validarToken, validar_AdminRole } = require('../../middleware/validar-jwttoken')
+const { validarToken, validar_AdminRole } = require('../../middleware/validar-jwt')
 
 router.get('/', validarToken, (req, res) => {
     const desde = Number(req.query.desde) || 0

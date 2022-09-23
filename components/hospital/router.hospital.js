@@ -3,7 +3,7 @@ const router = Router()
 
 const { check, body } = require('express-validator')
 const validarCampos = require('../../middleware/validar-campos')
-const { validarToken } = require('../../middleware/validar-jwttoken')
+const { validarToken } = require('../../middleware/validar-jwt')
 const controller = require('./controller.hospital')
 
 router.get('', (req, res) => {

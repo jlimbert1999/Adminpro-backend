@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { check } = require('express-validator')
-const { validarToken } = require('../../middleware/validar-jwttoken')
+const { validarToken } = require('../../middleware/validar-jwt')
 const validarCampos = require('../../middleware/validar-campos')
 const controller = require('./controller.medico')
 

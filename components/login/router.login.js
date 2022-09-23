@@ -3,7 +3,7 @@ const router = Router()
 const { check } = require('express-validator')
 const controller = require('./controller.login')
 const validarCampos = require('../../middleware/validar-campos')
-const { validarToken } = require('../../middleware/validar-jwttoken')
+const { validarToken } = require('../../middleware/validar-jwt')
 
 
 router.post('/',
