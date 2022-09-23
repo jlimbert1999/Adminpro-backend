@@ -12,10 +12,11 @@ router.post('/',
         check('password', "El password es requerido").not().isEmpty(),
         validarCampos
     ], (req, res) => {
-        controller.login(req.body).then((token) => {
+        controller.login(req.body).then((data) => {
             res.send({
                 ok: true,
-                token
+                token: data.token,
+                menu: data.menu
             })
 
         }).catch((err) => {
@@ -30,10 +31,11 @@ router.post('/google',
         check('token', "El token de google es obligatorio").not().notEmpty(),
         validarCampos
     ], (req, res) => {
-        controller.login_google(req.body.token).then((token) => {
+        controller.login_google(req.body.token).then((data) => {
             res.send({
                 ok: true,
-                token
+                token: data.token,
+                menu: data.token
             })
         }).catch((err) => {
             res.status(err.status).send({
@@ -45,10 +47,11 @@ router.post('/google',
 
 router.get('/renew_token', validarToken, (req, res) => {
     //renovar token con id insertado por milddleware validar token
-    controller.renewToken(req._id).then((token) => {
+    controller.renewToken(req._id).then((data) => {
         res.send({
             ok: true,
-            token
+            token: data.token,
+            menu: data.menu
         })
     })
 })
@@ -56,7 +59,7 @@ router.get('/renew_token', validarToken, (req, res) => {
 router.get('/verify_token', validarToken, (req, res) => {
     res.send({
         ok: true,
-        message:'token validado'
+        message: 'token validado'
     })
 })
 

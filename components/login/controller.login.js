@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const { generarToken } = require('../../helpers/jwt')
 const Usuarios = require('../users/model.user')
 const { googleVerify } = require('../../helpers/google-singin')
+const { getMenuFrontend } = require('../../helpers/menu-frontend')
 
 login = (credenciales) => {
     const { email, password } = credenciales
@@ -25,7 +26,7 @@ login = (credenciales) => {
             //Generacion token
             try {
                 const token = await generarToken(usuariodb._id, usuariodb.nombre, usuariodb.role, usuariodb.google, usuariodb.email, usuariodb.img)
-                resolve(token)
+                resolve({ token, menu: getMenuFrontend(usuariodb.role) })
             } catch (error) {
                 console.log('[Server]: Error (generacion token) =>', error);
                 return reject({ status: 500, message: 'Error en login' })
@@ -65,7 +66,7 @@ login_google = (tokenGoogle) => {
             //guadar cambios
             await newUser.save()
             const token = await generarToken(newUser._id, newUser.nombre, newUser.role, usuariodb.google, usuariodb.email, usuariodb.img)
-            resolve(token)
+            resolve({ token, menu: getMenuFrontend(usuariodb.role) })
         } catch (error) {
             reject({ status: 401, message: 'token de google invalido' })
         }
@@ -75,7 +76,8 @@ login_google = (tokenGoogle) => {
 const renewToken = async (id_user) => {
     try {
         const usuariodb = await Usuarios.findById(id_user)
-        return await generarToken(id_user, usuariodb.nombre, usuariodb.role, usuariodb.google, usuariodb.email, usuariodb.img)
+        const token = await generarToken(id_user, usuariodb.nombre, usuariodb.role, usuariodb.google, usuariodb.email, usuariodb.img)
+        return { token, menu: getMenuFrontend(usuariodb.role) }
 
     } catch (error) {
         console.log('[Server]: Error al renovar token', error);

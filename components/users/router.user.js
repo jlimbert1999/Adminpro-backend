@@ -4,7 +4,7 @@ const { check } = require('express-validator')
 
 const controller = require('./controller.user')
 const validarCampos = require('../../middleware/validar-campos')
-const { validarToken } = require('../../middleware/validar-jwtToken')
+const { validarToken, validar_AdminRole } = require('../../middleware/validar-jwtToken')
 
 router.get('/', validarToken, (req, res) => {
     const desde = Number(req.query.desde) || 0
@@ -64,6 +64,7 @@ router.get('/', (req, res) => {
 router.put('/:id',
     [
         validarToken,
+        validar_AdminRole,
         check('nombre', "El nombre es requerido").not().isEmpty(),
         check('role', "El rol es requerido").not().isEmpty(),
         check('email', "El email es requerido").isEmail(),
